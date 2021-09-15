@@ -12,11 +12,13 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/index.js",
-    "dev": "SET HOSTAPP=localhost&&node ./src/index.js"
+    "dev": "env-cmd -f ./config/.env.local node ./src/index.js"
   },
   "keywords": [],
   "author": "",

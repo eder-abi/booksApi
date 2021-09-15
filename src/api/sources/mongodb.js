@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");						
 
-const hostname = process.env.HOSTAPP || "mongo";
+const hostname = process.env.DEV_HOSTNAME || "mongo";
 const connString = `mongodb://${hostname}/books`;
 console.log(connString);
 mongoose
