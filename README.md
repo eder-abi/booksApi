@@ -103,7 +103,7 @@ This project requires __docker-compose__ to launch api and database (mongo).
 4. To search a book. Parameter author is optional
     - WIN
         ```bash
-        curl http://localhost:3000/api/search/Silmarillion?author=Tolkien -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTY3MDgwN30.M7nuedPfaxtSt7zsWOeHV_1JN8YMsahDMsl97IsacEk"
+        curl http://localhost:3000/api/search/Silmarillion?author=Tolkien&publisher=Grupo Planeta Spain&key=AIzaSyASo8XKSmmll_QoPh9lvXOuWJ4ViqkglZM -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTY3MDgwN30.M7nuedPfaxtSt7zsWOeHV_1JN8YMsahDMsl97IsacEk"
         ```
     - LINUX
         ```bash
