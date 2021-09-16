@@ -10,7 +10,10 @@ router.post("/signup", async (req, res) => {
   const userFound = await checkUser(req.body.username);
   if (userFound){
     console.log(`The user already exist.`);
-    res.status(400).send("This user already exist.");
+    const message = {
+      message: "This user already exist."
+    }
+    res.status(409).send(message);
     return;
   }
 
@@ -19,9 +22,12 @@ router.post("/signup", async (req, res) => {
 
   const newUser = await mongodb.createUser(req.body.username, pwdHashed);
   if (newUser){
-    res.send("Sign up OK, please login.");
+    res.status(201).send();
   } else{
-    res.status(400).send("Cannot create user.");
+    const message = {
+      message: "Invalid user or password"
+    }
+    res.status(400).send(message);
   }
 });
 
@@ -31,12 +37,16 @@ router.post("/signin", async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, userFound.hashedPassword);
   console.log("User found", userFound);
   if (!validPassword){
-    res.status(400).send("Invalid user or password");
+    const message = {
+      message: "Invalid user or password"
+    }
+    res.status(400).send(message);
     return;
   }
   console.log(userFound.username);
-  const token = jwt.sign({ user: userFound.username }, process.env.JWTKEY);
-  
+  const token = {
+    access_token: jwt.sign({ user: userFound.username }, process.env.JWTKEY)
+  }
   res.send(token);  
 });
 

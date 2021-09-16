@@ -6,16 +6,19 @@ const mongodb = require('./sources/mongodb');
 // ** Create wishlist
 router.post("/wishlist", auth, async (req, res) => {
   // req.user
-  const wishlistFound = await validateWishlist(req.user, req.body.name);
+  const wishlistFound = await mongodb.getWishlist(req.user, req.body.name);
   if(wishlistFound){
-    return res.status(200).send("This wishlist already exists.");
+    return res.status(301).send();
   }
 
   const wishlist = await mongodb.createWishlist(req.user, req.body.name);
   if(wishlist){
     res.status(201).send(wishlist);
   } else{
-    res.status(400).send("Cannot create a wishlist");
+    const message = {
+      message: "Cannot create a wishlist"
+    }
+    res.status(400).send(message);
   }  
 });
 
@@ -26,7 +29,10 @@ router.delete("/wishlist/:id", auth, async (req, res) => {
   if(wishlist){
     res.status(200).send(wishlist);
   } else{
-    res.status(400).send("Cannot delete wishlist or is already deleted");
+    const message = {
+      message: "Wishlist is already deleted"
+    }
+    res.status(404).send(message);
   }  
 });
 
@@ -37,7 +43,7 @@ router.get("/wishlist", auth, async (req, res) => {
   if(wishlists){
     res.send(wishlists);
   } else {
-    res.status(404).send("");
+    res.status(404).send();
   }  
 });
 
@@ -48,7 +54,7 @@ router.get("/wishlist/:id", auth, async (req, res) => {
   if(wishlist){
     res.send(wishlist);
   } else {
-    res.status(404).send("");
+    res.status(404).send();
   }  
 });
 
@@ -60,7 +66,7 @@ router.post("/books/:wlname", auth, async (req, res) => {
   );
 
   if(bookFound){
-    return res.send(wishlist);
+    return res.status(304).send(wishlist);
   }
 
   const addedBook = await mongodb.addBookWishlist(
@@ -68,20 +74,27 @@ router.post("/books/:wlname", auth, async (req, res) => {
     req.params.wlname,
     req.body.bookId,
     req.body.title,
-    req.body.authors);
+    req.body.authors,
+    req.body.publisher,
+    req.body.language
+  );
 
     if(addedBook){
       res.status(201).send(addedBook);
     } else {
-      res.status(404).send("");
+      res.status(404).send();
     }
 });
 
 // ** Remove book to wishlist
 router.delete("/books/:wlname", auth, async (req, res) => {
   const wlFound = await mongodb.getWishlist(req.user, req.params.wlname);
+  let message;
   if(!wlFound){
-    return res.status(400).send(`Wishlist "${req.params.wlname}" not found.`);
+    message = {
+      message: `Wishlist "${req.params.wlname}" not found.`
+    }
+    return res.status(404).send(message);
   }
   const wishlist = await mongodb.removeBookWishlist(
     req.user,
@@ -92,15 +105,12 @@ router.delete("/books/:wlname", auth, async (req, res) => {
   if(wishlist){
     return res.send(wishlist);
   } else {
-    return res.status(400).send("Cannot delete book or is already deleted");
+    message = {
+      message: "Cannot delete book or is already deleted"
+    }
+    return res.status(404).send(message);
   } 
 
 });
-
-async function validateWishlist(user, name){
-  const wishlist = await mongodb.getWishlist(user, name);
-  return wishlist;
-}
-
 
 module.exports = router;

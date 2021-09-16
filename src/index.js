@@ -5,7 +5,6 @@ const booksGoogle = require('./api/books-google');
 const wishlistRoute = require('./api/wishlist');
 
 process.env.JWTKEY = "appPr1vat3K3y";
-process.env.GOOGLE_BOOKS_API_KEY = "AIzaSyASo8XKSmmll_QoPh9lvXOuWJ4ViqkglZM";
 
 app.use(express.json());
 app.use("/api", sessionRoute);

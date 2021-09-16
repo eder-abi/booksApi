@@ -22,7 +22,7 @@ const User = mongoose.model("User", userSchema);
 const wishlistSchema = new mongoose.Schema({
   user: String,
   name: String,
-  books: []
+  books: []  
 });
 const Wishlist = mongoose.model("Wishlist", wishlistSchema);
 
@@ -102,13 +102,15 @@ async function getAllWishlist(usename){
 }
 
 // ** Add Book to wishlist
-async function addBookWishlist(username, name, bookId, bookName, bookAuthors){
+async function addBookWishlist(username, name, bookId, bookName, bookAuthors, bookPublisher, language){
   try {
     console.log(`Add book "${bookName}" to wishlist "${name}"`);
     const newBook = {
       bookId: bookId,
       title: bookName,
-      authors: bookAuthors
+      authors: bookAuthors,
+      publisher: bookPublisher,
+      language: language
     }; 
     const wishlist = await getWishlist(username, name);
     wishlist.books.push(newBook);
