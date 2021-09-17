@@ -27,13 +27,13 @@ This project requires __docker-compose__ to launch api and database (mongo).
 2. Build API:
 
     ```bash
-    docker-compose build 
+    docker-compose build
     ```
 
 3. Execute Project:
 
     ```bash
-    docker-compose up 
+    docker-compose up
     ```
 
 ## API Examples
