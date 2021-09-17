@@ -80,7 +80,7 @@ This project requires __docker-compose__ to launch api and database (mongo).
 3. To create a new wishlist.
     - WIN
         ```bash
-        curl -X POST http://localhost:3000/api/wishlist -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTY3MDgwN30.M7nuedPfaxtSt7zsWOeHV_1JN8YMsahDMsl97IsacEk" -d "{\"name\":\"Lista 001\"}"
+        curl -X POST http://localhost:3000/api/wishlist -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN" -d "{\"name\":\"Lista 001\"}"
         ```
     - LINUX
         ```bash
@@ -110,7 +110,7 @@ This project requires __docker-compose__ to launch api and database (mongo).
     - LINUX
         ```bash
         curl --location --request GET 'http://localhost:3000/api/books?author=Tolkien&publisher=Grupo Planeta Spain&key=AIzaSyASo8XKSmmll_QoPh9lvXOuWJ4ViqkglZM&title=Silmarillion' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlcjEiLCJpYXQiOjE2MzE3NjMzNjR9.iT93bpSb6EaCeoooYbg7b18amYeMY38yOtSR9tccpr8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
     - Response (books found)
@@ -206,7 +206,7 @@ This project requires __docker-compose__ to launch api and database (mongo).
 7. To retrieve a wishlist and its books created by user.
     - WIN
         ```bash
-        curl http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
@@ -261,7 +261,7 @@ This project requires __docker-compose__ to launch api and database (mongo).
 9. Delete a wishlist.
     - WIN
         ```bash
-        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
