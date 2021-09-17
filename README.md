@@ -27,13 +27,13 @@ This project requires __docker-compose__ to launch api and database (mongo).
 2. Build API:
 
     ```bash
-    docker-compose build 
+    docker-compose build
     ```
 
 3. Execute Project:
 
     ```bash
-    docker-compose up 
+    docker-compose up
     ```
 
 ## API Examples
@@ -80,12 +80,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 3. To create a new wishlist.
     - WIN
         ```bash
-        curl -X POST http://localhost:3000/api/wishlist -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTY3MDgwN30.M7nuedPfaxtSt7zsWOeHV_1JN8YMsahDMsl97IsacEk" -d "{\"name\":\"Lista 001\"}"
+        curl -X POST http://localhost:3000/api/wishlist -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN" -d "{\"name\":\"Lista 001\"}"
         ```
     - LINUX
         ```bash
         curl --location --request POST 'http://localhost:3000/api/wishlist' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --header 'Content-Type: application/json' \
         --data-raw '{
             "name": "Lista 001"
@@ -105,12 +105,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 4. To search a book.
     - WIN
         ```bash
-        curl http://localhost:3000/api/books?title=Silmarillion^&author=Tolkien^&publisher=Grupo+Planeta+Spain^&key=AIzaSyASo8XKSmmll_QoPh9lvXOuWJ4ViqkglZM -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl http://localhost:3000/api/books?title=Silmarillion^&author=Tolkien^&publisher=Grupo+Planeta+Spain^&key=AIzaSyASo8XKSmmll_QoPh9lvXOuWJ4ViqkglZM -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
         curl --location --request GET 'http://localhost:3000/api/books?author=Tolkien&publisher=Grupo Planeta Spain&key=AIzaSyASo8XKSmmll_QoPh9lvXOuWJ4ViqkglZM&title=Silmarillion' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlcjEiLCJpYXQiOjE2MzE3NjMzNjR9.iT93bpSb6EaCeoooYbg7b18amYeMY38yOtSR9tccpr8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
     - Response (books found)
@@ -142,12 +142,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 5. Add a book to wishlist assigned.
     - WIN
         ```bash
-        curl -X POST http://localhost:3000/api/wishlist/Lista%20001/books -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8" -d "{\"bookId\":\"_LIfNCn06J8C\",\"title\":\"El Libro de los Cuentos Perdidos Historia de la Tierra Media, 1\",\"authors\":[\"J. R. R. Tolkien\"],\"publisher\":\"Grupo Planeta Spain\",\"language\":\"es\"}"
+        curl -X POST http://localhost:3000/api/wishlist/Lista%20001/books -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN" -d "{\"bookId\":\"_LIfNCn06J8C\",\"title\":\"El Libro de los Cuentos Perdidos Historia de la Tierra Media, 1\",\"authors\":[\"J. R. R. Tolkien\"],\"publisher\":\"Grupo Planeta Spain\",\"language\":\"es\"}"
         ```
     - LINUX
         ```bash
         curl --location --request POST 'http://localhost:3000/api/wishlist/Lista 001/books' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --header 'Content-Type: application/json' \
         --data-raw '{
             "bookId": "_LIfNCn06J8C",
@@ -183,12 +183,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 6. To retrieve all wishlist created by user.
     - WIN
         ```bash
-        curl http://localhost:3000/api/wishlist -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl http://localhost:3000/api/wishlist -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
         curl --location --request GET 'http://localhost:3000/api/wishlist' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
     - Response (list of wishlist)
@@ -206,12 +206,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 7. To retrieve a wishlist and its books created by user.
     - WIN
         ```bash
-        curl http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
         curl --location --request GET 'http://localhost:3000/api/wishlist/Lista 001' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
     - Response (wishlist and books)
@@ -238,12 +238,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 8. Delete a book from wishlist.
     - WIN
         ```bash
-        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001/books/_LIfNCn06J8C -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001/books/_LIfNCn06J8C -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
         curl --location --request DELETE 'http://localhost:3000/api/wishlist/Lista 001/books/_LIfNCn06J8C' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --header 'Content-Type: application/json' \
         --data-raw ''
         ```
@@ -261,12 +261,12 @@ This project requires __docker-compose__ to launch api and database (mongo).
 9. Delete a wishlist.
     - WIN
         ```bash
-        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
+        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
         curl --location --request DELETE 'http://localhost:3000/api/wishlist/Lista 001' \
-        --header 'x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8' \
+        --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
     - Response (wishlist deleted)
