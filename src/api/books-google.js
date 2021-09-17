@@ -3,11 +3,13 @@ const router = Router();
 const auth = require('./middleware/auth');
 const axios = require('axios');
 
-// Search Books
+// ============================================================================
+// Search Books from google books API
 router.get("/books", auth, async (req, res) => {
   let data = {
     items: []
   };
+  // prepare endpoint for searching
   let query = "q=";
   query = req.query.title ? query.concat(`${req.query.title}`) : query;
   query = req.query.author ? query.concat(`+inauthor:${req.query.author}`) : query;
@@ -16,9 +18,11 @@ router.get("/books", auth, async (req, res) => {
   query = `https://www.googleapis.com/books/v1/volumes?${query}`;
   console.log(query);
 
+  // execute axios
   const searchResult = await axios.get(query);
   const itemsResult = searchResult.data;
 
+  // if well, prepare items in a short representation
   if(itemsResult.items) {
     itemsResult.items.forEach((elem) => {
       if(elem.volumeInfo.publisher){
@@ -36,6 +40,7 @@ router.get("/books", auth, async (req, res) => {
     });
   }
 
+  //send result / error not found
   if(data.items.length !== 0)
     res.send(data);
   else

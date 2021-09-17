@@ -5,8 +5,10 @@ const { Router } = require('express');
 const router = Router();
 const mongodb = require('./sources/mongodb');
 
+// ============================================================================
 // ** Sign Up
 router.post("/signup", async (req, res) => {
+  // check if user is already exist
   const userFound = await checkUser(req.body.username);
   if (userFound){
     console.log(`The user already exist.`);
@@ -16,26 +18,33 @@ router.post("/signup", async (req, res) => {
     res.status(409).send(message);
     return;
   }
-
+  
+  // hashing password
   const salt = await bcrypt.genSalt(10);
   const pwdHashed = await bcrypt.hash(req.body.password, salt);
 
+  // create new user
   const newUser = await mongodb.createUser(req.body.username, pwdHashed);
+
+  // send result / error 
   if (newUser){
     res.status(201).send();
   } else{
     const message = {
-      message: "Invalid user or password"
+      message: "Something error during user creation"
     }
     res.status(400).send(message);
   }
 });
 
-// Sign In
+// ============================================================================
+// ** Sign In
 router.post("/signin", async (req, res) => {
+  // get user and check password
   const userFound = await mongodb.getUser(req.body.username);
   const validPassword = await bcrypt.compare(req.body.password, userFound.hashedPassword);
-  console.log("User found", userFound);
+  
+  // if bad password send error
   if (!validPassword){
     const message = {
       message: "Invalid user or password"
@@ -43,6 +52,8 @@ router.post("/signin", async (req, res) => {
     res.status(400).send(message);
     return;
   }
+  
+  // create token and send it
   console.log(userFound.username);
   const token = {
     access_token: jwt.sign({ user: userFound.username }, process.env.JWTKEY)
@@ -50,6 +61,8 @@ router.post("/signin", async (req, res) => {
   res.send(token);  
 });
 
+// ============================================================================
+// ** check user
 async function checkUser(username){
   const userFound = await mongodb.getUser(username);
   return (userFound) ? true : false;

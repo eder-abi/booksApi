@@ -6,6 +6,7 @@ const wishlistRoute = require('./api/wishlist');
 
 process.env.JWTKEY = "appPr1vat3K3y";
 
+// separate endpoints in routes
 app.use(express.json());
 app.use("/api", sessionRoute);
 app.use("/api", wishlistRoute);

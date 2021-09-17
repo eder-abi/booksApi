@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
-
+// ============================================================================
+// ** middleware for checking user
 function auth(req, res, next) {
+    // check access toke was provided
     let message;
     const token = req.header("x-auth-token");
     if (!token){
@@ -9,6 +11,7 @@ function auth(req, res, next) {
       };
       return res.status(403).send(message);
     }
+    // verify token, if ok then continue else send error
     try {
       const decoded = jwt.verify(token, process.env.JWTKEY);
       req.user = decoded.user;
