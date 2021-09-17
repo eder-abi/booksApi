@@ -59,7 +59,7 @@ router.get("/wishlist/:id", auth, async (req, res) => {
 });
 
 // ** Add book to wishlist
-router.post("/books/:wlname", auth, async (req, res) => {
+router.post("/wishlist/:wlname/books", auth, async (req, res) => {
   const wishlist = await mongodb.getWishlist(req.user, req.params.wlname);
   const bookFound = wishlist.books.find(elem => 
     elem.bookId === req.body.bookId 
@@ -87,7 +87,7 @@ router.post("/books/:wlname", auth, async (req, res) => {
 });
 
 // ** Remove book to wishlist
-router.delete("/books/:wlname", auth, async (req, res) => {
+router.delete("/wishlist/:wlname/books/:bookId", auth, async (req, res) => {
   const wlFound = await mongodb.getWishlist(req.user, req.params.wlname);
   let message;
   if(!wlFound){
@@ -99,7 +99,7 @@ router.delete("/books/:wlname", auth, async (req, res) => {
   const wishlist = await mongodb.removeBookWishlist(
     req.user,
     req.params.wlname,
-    req.body.bookId
+    req.params.bookId
   );
 
   if(wishlist){

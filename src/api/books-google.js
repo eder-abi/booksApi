@@ -4,17 +4,19 @@ const auth = require('./middleware/auth');
 const axios = require('axios');
 
 // Search Books
-router.get("/search/:q", auth, async (req, res) => {
+router.get("/books", auth, async (req, res) => {
   let data = {
     items: []
   };
-  let query = `q=${req.params.q}`
+  let query = "q=";
+  query = req.query.title ? query.concat(`${req.query.title}`) : query;
   query = req.query.author ? query.concat(`+inauthor:${req.query.author}`) : query;
   query = req.query.publisher ? query.concat(`+inpublisher:${req.query.publisher}`) : query;
-  query = req.query.publisher ? query.concat(`&key=${req.query.key}`) : query;
+  query = req.query.key ? query.concat(`&key=${req.query.key}`) : query;
+  query = `https://www.googleapis.com/books/v1/volumes?${query}`;
   console.log(query);
 
-  const searchResult = await axios.get(`https://www.googleapis.com/books/v1/volumes?${query}`);
+  const searchResult = await axios.get(query);
   const itemsResult = searchResult.data;
 
   if(itemsResult.items) {
