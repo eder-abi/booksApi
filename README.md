@@ -7,14 +7,14 @@ This project requires __docker-compose__ to launch api and database (mongo).
     - `/signup`: To registry a new user.
     - `/signin`: To login with user registed previously and return an access token.
     - `/wishlist`: To create a new wishlist.
-    - `/wishlist/<wishlist-Id>/books`: Add a book to wishlist assigned.
+    - `/wishlist/<wishlist name>/books`: Add a book to wishlist assigned.
 - **Get Methods**
     - `/books/?title=<title book>^&author=<author>&publisher=<publisher>&key=<google-books-api-key>`: To search a book.
     - `/wishlist`: To retrieve all wishlist created by user.
-    - `/wishlist/<wishlist-Id>`: To retrieve a wishlist and its books created by user.
+    - `/wishlist/<wishlist-name>`: To retrieve a wishlist and its books created by user.
 - **Delete Methods**
-    - `/wishlist/{wishlist-Id}`: Delete a wishlist by user.
-    - `/wishlist/<wishlist-Id>/books/<bookId>`: Delete a book from wishlist by user.
+    - `/wishlist/{wishlist-name}`: Delete a wishlist by user.
+    - `/wishlist/<wishlist name>/books/<bookId>`: Delete a book from wishlist by user.
 
 ## Running Locally
 
@@ -52,9 +52,6 @@ This project requires __docker-compose__ to launch api and database (mongo).
         }'
         ```
     - Response
-        ```http
-        201
-        ```
         ```bash
         Sign up OK, please login.
         ```
@@ -74,9 +71,6 @@ This project requires __docker-compose__ to launch api and database (mongo).
         }'
         ```
     - Response (access token)
-        ```http
-        200
-        ```
         ```bash
         {
             "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZWRlciIsImlhdCI6MTYzMTc2NDE3OX0.-y0KKusxTB3BdSVaQFjPJ-vKZLn8zbpwwFvORHjeOj8"
@@ -97,9 +91,15 @@ This project requires __docker-compose__ to launch api and database (mongo).
             "name": "Lista 001"
         }'
         ```
-    - Response
-        ```http
-        201
+    - Response (new wishlist)
+        ```bash
+        {
+            "user":"eder",
+            "name":"Lista 001",
+            "books":[],
+            "_id":"6141768420816c9bb8a1e7de",
+            "__v":0
+        }
         ```
 
 4. To search a book.
@@ -114,9 +114,6 @@ This project requires __docker-compose__ to launch api and database (mongo).
         --data-raw ''
         ```
     - Response (books found)
-        ```http
-        200
-        ```
         ```bash
         {
             "items": [
@@ -145,11 +142,11 @@ This project requires __docker-compose__ to launch api and database (mongo).
 5. Add a book to wishlist assigned.
     - WIN
         ```bash
-        curl -X POST http://localhost:3000/api/wishlist/1/books -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN" -d "{\"bookId\":\"_LIfNCn06J8C\",\"title\":\"El Libro de los Cuentos Perdidos Historia de la Tierra Media, 1\",\"authors\":[\"J. R. R. Tolkien\"],\"publisher\":\"Grupo Planeta Spain\",\"language\":\"es\"}"
+        curl -X POST http://localhost:3000/api/wishlist/Lista%20001/books -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN" -d "{\"bookId\":\"_LIfNCn06J8C\",\"title\":\"El Libro de los Cuentos Perdidos Historia de la Tierra Media, 1\",\"authors\":[\"J. R. R. Tolkien\"],\"publisher\":\"Grupo Planeta Spain\",\"language\":\"es\"}"
         ```
     - LINUX
         ```bash
-        curl --location --request POST 'http://localhost:3000/api/wishlist/1/books' \
+        curl --location --request POST 'http://localhost:3000/api/wishlist/Lista 001/books' \
         --header 'x-auth-token: ACCESS_TOKEN' \
         --header 'Content-Type: application/json' \
         --data-raw '{
@@ -162,9 +159,25 @@ This project requires __docker-compose__ to launch api and database (mongo).
             "language": "es"
         }'       
         ```
-    - Response
-        ```http
-        201
+    - Response (book added)
+        ```bash
+        {
+            "_id":"6142bfd114bbe4f8f754e4fb",
+            "user":"eder",
+            "name":"Lista 001",
+            "books": [
+                {
+                    "bookId":"_LIfNCn06J8C",
+                    "title":"El Libro de los Cuentos Perdidos Historia de la Tierra Media, 1",
+                    "authors": [
+                        "J. R. R. Tolkien"
+                    ],
+                    "publisher":"Grupo Planeta Spain",
+                    "language":"es"
+                }
+            ],
+            "__v":1
+        }
         ```
 
 6. To retrieve all wishlist created by user.
@@ -179,20 +192,13 @@ This project requires __docker-compose__ to launch api and database (mongo).
         --data-raw ''
         ```
     - Response (list of wishlist)
-        ```http
-        200
-        ```
         ```bash
         [
             {
-                "WishlistsId":1,
-                "UserId":1,
-                "Name":"Lista 001"
-            },
-            {
-                "WishlistsId":2,
-                "UserId":1,
-                "Name":"Lista 002"
+                "_id": "6142bc3c48a2b3a8174152d7",
+                "user": "eder",
+                "name": "Lista 001",
+                "__v": 1
             }
         ]
         ```
@@ -200,20 +206,18 @@ This project requires __docker-compose__ to launch api and database (mongo).
 7. To retrieve a wishlist and its books created by user.
     - WIN
         ```bash
-        curl http://localhost:3000/api/wishlist/1 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
+        curl http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
-        curl --location --request GET 'http://localhost:3000/api/wishlist/1' \
+        curl --location --request GET 'http://localhost:3000/api/wishlist/Lista 001' \
         --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
     - Response (wishlist and books)
-        ```http
-        200
-        ```
         ```bash
         {
+            "_id":"6142bfd114bbe4f8f754e4fb",
             "user":"eder",
             "name":"Lista 001",
             "books":[
@@ -226,14 +230,15 @@ This project requires __docker-compose__ to launch api and database (mongo).
                     "publisher":"Grupo Planeta Spain",
                     "language":"es"
                 }
-            ]
+            ],
+            "__v":1
         }
         ```
 
 8. Delete a book from wishlist.
     - WIN
         ```bash
-        curl -X DELETE http://localhost:3000/api/wishlist/1/books/_LIfNCn06J8C -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
+        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001/books/_LIfNCn06J8C -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
@@ -242,15 +247,21 @@ This project requires __docker-compose__ to launch api and database (mongo).
         --header 'Content-Type: application/json' \
         --data-raw ''
         ```
-    - Response
-        ```http
-        200
+    - Response (book deleted)
+        ```bash
+        {
+            _id: new ObjectId("6142bfd114bbe4f8f754e4fb"),
+            user: 'eder',
+            name: 'Lista 001',
+            books: [],
+            __v: 1
+        }
         ```
 
 9. Delete a wishlist.
     - WIN
         ```bash
-        curl -X DELETE http://localhost:3000/api/wishlist/1 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
+        curl -X DELETE http://localhost:3000/api/wishlist/Lista%20001 -H "Content-Type: application/json" -H "x-auth-token: ACCESS_TOKEN"
         ```
     - LINUX
         ```bash
@@ -258,7 +269,13 @@ This project requires __docker-compose__ to launch api and database (mongo).
         --header 'x-auth-token: ACCESS_TOKEN' \
         --data-raw ''
         ```
-    - Response
-        ```http
-        200
+    - Response (wishlist deleted)
+        ```bash
+        {
+            "_id":"6142bfd114bbe4f8f754e4fb",
+            "user":"eder",
+            "name":"Lista 001",
+            "books":[],
+            "__v":1
+        }
         ```
