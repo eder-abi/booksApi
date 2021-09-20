@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { Router } = require('express');
 const router = Router();
-const mongodb = require('./sources/mongodb');
+// const mongodb = require('./sources/mongodb');
+const { sqlite } = require('../api/sources');
 
 // ============================================================================
 // ** Sign Up
@@ -24,11 +25,12 @@ router.post("/signup", async (req, res) => {
   const pwdHashed = await bcrypt.hash(req.body.password, salt);
 
   // create new user
-  const newUser = await mongodb.createUser(req.body.username, pwdHashed);
+  // const newUser = await mongodb.createUser(req.body.username, pwdHashed);
+  const newUser = sqlite.insertUser(req.body.username, pwdHashed);
 
   // send result / error 
   if (newUser){
-    res.status(201).send();
+    res.status(201).send("Sign up OK, please login.");
   } else{
     const message = {
       message: "Something error during user creation"
@@ -41,8 +43,9 @@ router.post("/signup", async (req, res) => {
 // ** Sign In
 router.post("/signin", async (req, res) => {
   // get user and check password
-  const userFound = await mongodb.getUser(req.body.username);
-  const validPassword = await bcrypt.compare(req.body.password, userFound.hashedPassword);
+  // const userFound = await mongodb.getUser(req.body.username);
+  const userFound = sqlite.selectUserByName(req.body.username);
+  const validPassword = await bcrypt.compare(req.body.password, userFound.HashedPassword);
   
   // if bad password send error
   if (!validPassword){
@@ -54,9 +57,9 @@ router.post("/signin", async (req, res) => {
   }
   
   // create token and send it
-  console.log(userFound.username);
+  console.log(userFound.Username);
   const token = {
-    access_token: jwt.sign({ user: userFound.username }, process.env.JWTKEY)
+    access_token: jwt.sign({ userId: userFound.UserId, user: userFound.Username }, process.env.JWTKEY)
   }
   res.send(token);  
 });
@@ -64,7 +67,8 @@ router.post("/signin", async (req, res) => {
 // ============================================================================
 // ** check user
 async function checkUser(username){
-  const userFound = await mongodb.getUser(username);
+  // const userFound = await mongodb.getUser(username);
+  const userFound = sqlite.selectUserByName(username);
   return (userFound) ? true : false;
 }
 
